@@ -1,1 +1,1 @@
-console: bash runner.sh
+worker: bash runner.sh
