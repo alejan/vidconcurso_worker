@@ -14,6 +14,7 @@ jsonMSG='{
 
 url="http://cloudmailin.com/target/200"
 uri = URI.parse(url) 
+http = Net::HTTP.new(uri.host, 80)
 
 request = Net::HTTP::Post.new(uri.request_uri,
 			'Content-Type' => 'application/json')
