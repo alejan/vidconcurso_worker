@@ -1,1 +1,1 @@
-worker: bash runner.sh
+worker: ruby Worker.rb
