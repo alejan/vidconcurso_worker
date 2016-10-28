@@ -2,9 +2,9 @@
 require 'rubygems'
 #require 'active_record'
 #require  'mysql2'
-#require 'streamio-ffmpeg'
-#require 'mail'
-#require 'aws-sdk'
+require 'streamio-ffmpeg'
+require 'mail'
+require 'aws-sdk'
 
 #options = {
 #             	 :address => 'email-smtp.us-west-2.amazonaws.com',
