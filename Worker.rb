@@ -28,7 +28,7 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
 poller.poll do |message|
 msg=message.message_attributes['uploaded'].string_value
-
+puts msg
 puts Dir.pwd
 
 Dir.mkdir Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/')
