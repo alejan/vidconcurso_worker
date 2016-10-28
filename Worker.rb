@@ -5,16 +5,21 @@ require 'rubygems'
 require 'streamio-ffmpeg'
 require 'mail'
 require 'aws-sdk'
+require 'net/http'
+require 'json'
+require 'uri'
 
-#options = {
-#             	 :address => 'email-smtp.us-west-2.amazonaws.com',
-#                 :port => 587,
-#                 :domain => 'amazon.com',
-#                 :user_name => ENV['SMTP_USER'],
-#                 :password => ENV['SMTP_PASSWORD'],
-#                 :authentication => 'plain',
-#                 :enable_starttls_auto => true 
-#		}
+jsonMSG='{
+	"msg":"su video se genero"}'
+
+url="http://cloudmailin.com/target/200"
+uri = URI.parse(url) 
+
+request = Net::HTTP::Post.new(uri.request_uri,
+			'Content-Type' => 'application/json')
+request.body = jsonMSG
+resp = http.request(request)
+
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
 dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
@@ -90,6 +95,9 @@ s3.put_object({
                         })
 
 
+
+resp = http.request(request)
+puts resp
 
 #Mail.defaults do
 #delivery_method :smtp, options
