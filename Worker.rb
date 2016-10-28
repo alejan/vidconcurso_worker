@@ -31,9 +31,9 @@ msg=message.message_attributes['uploaded'].string_value
 puts msg
 
 
-Dir.mkdir "/uploads/"+msg.split('/')[0..2].join('/')
+FileUtils.mkdir_p Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/')
 puts "dir /uploa/#{msg.split('/')[0..2].join('/')} created" 
-Dir.mkdir Dir.pwd+"/"+msg.split('/')[0..2].join('/') 
+FileUtils.mkdir_p Dir.pwd+"/"+msg.split('/')[0..2].join('/') 
 puts "dir /#{msg.split('/')[0..2].join('/')} created"
 
 s3.get_object(
@@ -42,9 +42,9 @@ s3.get_object(
                 key:  msg
                 )
 
-movie = FFMPEG::Movie.new('/uploads/'+msg)
+movie = FFMPEG::Movie.new(Dir.pwd+'/uploads/'+msg)
 
-movie.transcode("/"+msg+".flv") do |progress|
+movie.transcode(Dir.pwd+"/"+msg+".flv") do |progress|
 
 if progress == 1
  o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
@@ -78,7 +78,7 @@ vidclip.update_item({
 			action: "PUT"
 		}	
 	}})
-converted = File.open("/"+msg+".flv","r")
+converted = File.open(Dir.pwd+"/"+msg+".flv","r")
 s3.put_object({
 	 acl:"public-read",
          body: converted,
@@ -103,8 +103,8 @@ s3.put_object({
 #end
 
 
-FileUtils.rm_rf("/uploads/"+msg.split('/')[0..2].join('/'))
-FileUtils.rm_rf("/"+msg.split('/')[0..2].join('/'))
+FileUtils.rm_rf(Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/'))
+FileUtils.rm_rf(Dir.pwd+"/"+msg.split('/')[0..2].join('/'))
 
 end
 end
