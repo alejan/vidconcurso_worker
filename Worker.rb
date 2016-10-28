@@ -1,0 +1,117 @@
+#!/home/ec2-user/.rvm/rubies/ruby-2.3.0/bin/ruby
+require 'rubygems'
+#require 'active_record'
+#require  'mysql2'
+require 'streamio-ffmpeg'
+require 'mail'
+require 'aws-sdk'
+
+options = {
+             	 :address => 'email-smtp.us-west-2.amazonaws.com',
+                 :port => 587,
+                 :domain => 'amazon.com',
+                 :user_name => ENV['SMTP_USER'],
+                 :password => ENV['SMTP_PASSWORD'],
+                 :authentication => 'plain',
+                 :enable_starttls_auto => true 
+		}
+
+s3 = Aws::S3::Client.new(region:"us-west-2")
+dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
+sqs = Aws::SQS::Client.new(region: "us-west-2")
+vidclip = dynamoDB.table("vidclip")
+
+qurl=sqs.get_queue_url({
+        queue_name: "vidcon_queue"
+        })
+poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
+
+poller.poll do |message|
+msg=message.message_attributes['uploaded'].string_value
+
+puts Dir.pwd
+
+Dir.mkdir "/home/ec2-user/uploads/"+msg.split('/')[0..2].join('/')
+puts "dir /uploads/#{msg.split('/')[0..2].join('/')} created" 
+Dir.mkdir "/home/ec2-user/"+msg.split('/')[0..2].join('/') 
+puts "dir /#{msg.split('/')[0..2].join('/')} created"
+
+s3.get_object(
+                response_target: "/home/ec2-user/uploads/" +msg,
+                bucket: "vidconbanner",
+                key:  msg
+                )
+
+movie = FFMPEG::Movie.new('home/ec2-user/uploads/'+msg)
+
+movie.transcode("/home/ec2-user/"+msg+".flv") do |progress|
+
+if progress == 1
+ o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+ string = (0...50).map { o[rand(o.length)] }.join
+ string = '/video/show/converted/' + string
+ 
+ vid=vidclip.scan({
+	  select: "ALL_ATTRIBUTES",
+	   scan_filter: {
+		"url"=> {
+		attribute_value_list: [msg],
+		comparison_operator: "EQ"
+		
+		}}})
+
+vidclip.update_item({
+		key:{
+		"preview_url" =>vid.items[0]['preview_url'] 
+		},
+		attribute_updates: {
+   		"progress" => {
+      			value: "convertido", # value <Hash,Array,String,Numeric,Boolean,IO,Set,nil>
+      			action: "PUT", # accepts ADD, PUT, DELETE
+    		},
+		"converted_url" =>{
+			value: string,
+			action: "PUT"
+		},
+		"bucket_url" => {
+			value: "vidclip/converted/"+msg.split('/')[2]+"/"+File.basename(msg)+".flv",
+			action: "PUT"
+		}	
+	}})
+converted = File.open("/home/ec2-user/"+msg+".flv","r")
+s3.put_object({
+	 acl:"public-read",
+         body: converted,
+#	grant_read: "GrantRead",
+#  	grant_read_acp: "READ_ACP",
+#	 grant_full_control: "GrantFullControl",
+         bucket: "vidconbanner",
+         key: "vidclip/converted/"+msg.split('/')[2]+"/"+File.basename(msg)+".flv"
+                        })
+
+
+
+Mail.defaults do
+delivery_method :smtp, options
+end
+
+Mail.deliver do
+to vid.items[0]['video_id']
+from 'vidconcurso@gmail.com'
+subject 'Video concurso'
+body 'su video se genero '
+end
+
+
+FileUtils.rm_rf("/home/ec2-user/uploads/"+msg.split('/')[0..2].join('/'))
+FileUtils.rm_rf("/home/ec2-user/"+msg.split('/')[0..2].join('/'))
+
+end
+end
+
+end
+
+
+ 
+
+
