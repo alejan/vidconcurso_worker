@@ -1,1 +1,1 @@
-bundle exec Worker.rb
+collector: bundle exec Worker.rb
