@@ -5,4 +5,4 @@ ruby '2.3.0'
 gem 'streamio-ffmpeg', '~>2.1.0'
 gem 'aws-sdk-rails'
 gem 'spring'
-
+gem 'mail'
