@@ -37,7 +37,7 @@ FileUtils.mkdir_p Dir.pwd+"/"+msg.split('/')[0..2].join('/')
 puts "dir /#{msg.split('/')[0..2].join('/')} created"
 
 s3.get_object(
-                response_target: "/uploads/" +msg,
+                response_target: Dir.pwd+"/uploads/" +msg,
                 bucket: "vidconbanner",
                 key:  msg
                 )
