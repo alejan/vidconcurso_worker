@@ -5,4 +5,4 @@
 #cd /home/ec2-user
 # ruby Worker.rb
 #/home/ec2-user/.rvm/wrappers/ruby-2.3.0/ruby /home/ec2-user/worker/Worker.rb
-ruby /home/ec2-user/worker/Worker.rb
+ruby Worker.rb
