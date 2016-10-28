@@ -1,1 +1,1 @@
-collector: bundle exec Worker.rb
+console: bash runner.sh
