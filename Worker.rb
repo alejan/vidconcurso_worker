@@ -6,15 +6,15 @@ require 'streamio-ffmpeg'
 require 'mail'
 require 'aws-sdk'
 
-options = {
-             	 :address => 'email-smtp.us-west-2.amazonaws.com',
-                 :port => 587,
-                 :domain => 'amazon.com',
-                 :user_name => ENV['SMTP_USER'],
-                 :password => ENV['SMTP_PASSWORD'],
-                 :authentication => 'plain',
-                 :enable_starttls_auto => true 
-		}
+#options = {
+#             	 :address => 'email-smtp.us-west-2.amazonaws.com',
+#                 :port => 587,
+#                 :domain => 'amazon.com',
+#                 :user_name => ENV['SMTP_USER'],
+#                 :password => ENV['SMTP_PASSWORD'],
+#                 :authentication => 'plain',
+#                 :enable_starttls_auto => true 
+#		}
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
 dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
@@ -31,20 +31,20 @@ msg=message.message_attributes['uploaded'].string_value
 
 puts Dir.pwd
 
-Dir.mkdir "/home/ec2-user/uploads/"+msg.split('/')[0..2].join('/')
-puts "dir /uploads/#{msg.split('/')[0..2].join('/')} created" 
-Dir.mkdir "/home/ec2-user/"+msg.split('/')[0..2].join('/') 
+Dir.mkdir Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/')
+puts "dir /uploa/#{msg.split('/')[0..2].join('/')} created" 
+Dir.mkdir Dir.pwd+"/"+msg.split('/')[0..2].join('/') 
 puts "dir /#{msg.split('/')[0..2].join('/')} created"
 
 s3.get_object(
-                response_target: "/home/ec2-user/uploads/" +msg,
+                response_target: Dir.pwd+"/uploads/" +msg,
                 bucket: "vidconbanner",
                 key:  msg
                 )
 
-movie = FFMPEG::Movie.new('home/ec2-user/uploads/'+msg)
+movie = FFMPEG::Movie.new(Dir.pwd+'/uploads/'+msg)
 
-movie.transcode("/home/ec2-user/"+msg+".flv") do |progress|
+movie.transcode(Dir.pwd+"/"+msg+".flv") do |progress|
 
 if progress == 1
  o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
@@ -78,7 +78,7 @@ vidclip.update_item({
 			action: "PUT"
 		}	
 	}})
-converted = File.open("/home/ec2-user/"+msg+".flv","r")
+converted = File.open(Dir.pwd+"/"+msg+".flv","r")
 s3.put_object({
 	 acl:"public-read",
          body: converted,
@@ -91,20 +91,20 @@ s3.put_object({
 
 
 
-Mail.defaults do
-delivery_method :smtp, options
-end
+#Mail.defaults do
+#delivery_method :smtp, options
+#end
 
-Mail.deliver do
-to vid.items[0]['video_id']
-from 'vidconcurso@gmail.com'
-subject 'Video concurso'
-body 'su video se genero '
-end
+#Mail.deliver do
+#to vid.items[0]['video_id']
+#from 'vidconcurso@gmail.com'
+#subject 'Video concurso'
+#body 'su video se genero '
+#end
 
 
-FileUtils.rm_rf("/home/ec2-user/uploads/"+msg.split('/')[0..2].join('/'))
-FileUtils.rm_rf("/home/ec2-user/"+msg.split('/')[0..2].join('/'))
+FileUtils.rm_rf(Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/'))
+FileUtils.rm_rf(Dir.pwd+"/"+msg.split('/')[0..2].join('/'))
 
 end
 end
