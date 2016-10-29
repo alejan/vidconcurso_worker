@@ -44,6 +44,7 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.9.1)
     multi_json (1.12.1)
+    newrelic_rpm (3.16.2.321)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     rack (2.0.1)
@@ -80,6 +81,7 @@ DEPENDENCIES
   aws-sdk
   aws-sdk-rails
   mail
+  newrelic_rpm
   sendgrid-ruby
   spring
   streamio-ffmpeg (~> 2.1.0)
