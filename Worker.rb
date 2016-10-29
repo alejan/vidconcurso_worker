@@ -108,7 +108,7 @@ data = JSON.parse('{
   ]
 }')
 
-to = Email.new(email: vid.items[0]['video_id'])
+to = Email.new(email: vid.items[0]['video_id'].to_s)
 mail = Mail.new(from, subject,to, content)
 
 sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
