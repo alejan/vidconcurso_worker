@@ -8,6 +8,9 @@ require 'aws-sdk'
 require 'sendgrid-ruby'
 include SendGrid
 
+from = Email.new(email: 'a.quintero10@uniandes.edu.co')
+subject = 'vidconcurso'
+content = Content.new(type: 'text/plain', value: 'su video se ha convertido')
 
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
@@ -88,7 +91,7 @@ data = JSON.parse('{
     {
       "to": [
         {
-          "email": vid.items[0][\"video_id\"]
+          "email": "alejandr0quinter0@yahoo.com"
         }
       ],
       "subject": "vidconcurso"
@@ -105,8 +108,11 @@ data = JSON.parse('{
   ]
 }')
 
+to = Email.new(email: vid.items[0]['video_id'])
+mail = Mail.new(from, subject,to, content)
+
 sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-response = sg.client.mail._("send").post(request_body: data)
+response = sg.client.mail._("send").post(request_body: mail.to_json)
 puts response.status_code
 puts response.body
 puts response.headers
