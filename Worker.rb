@@ -5,21 +5,9 @@ require 'rubygems'
 require 'streamio-ffmpeg'
 require 'mail'
 require 'aws-sdk'
-require 'net/http'
-require 'json'
-require 'uri'
+require 'sendgrid-ruby'
+include SendGrid
 
-jsonMSG='{
-	"msg":"su video se genero"}'
-
-url="http://cloudmailin.com/target/200"
-uri = URI.parse(url) 
-http = Net::HTTP.new(uri.host, 80)
-
-request = Net::HTTP::Post.new(uri.request_uri,
-			'Content-Type' => 'application/json')
-request.body = jsonMSG
-resp = http.request(request)
 
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
@@ -96,9 +84,33 @@ s3.put_object({
                         })
 
 
+data = JSON.parse('{
+  "personalizations": [
+    {
+      "to": [
+        {
+          "email": vid.items[0]['video_id']
+        }
+      ],
+      "subject": "vidconcurso"
+    }
+  ],
+  "from": {
+    "email": "vidconcurso@gmail.com"
+  },
+  "content": [
+    {
+      "type": "text/plain",
+      "value": "su video se convirtio!"
+    }
+  ]
+}')
 
-resp = http.request(request)
-puts resp
+sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+response = sg.client.mail._("send").post(request_body: data)
+puts response.status_code
+puts response.body
+puts response.headers
 
 #Mail.defaults do
 #delivery_method :smtp, options
