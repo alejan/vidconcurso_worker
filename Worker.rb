@@ -89,7 +89,7 @@ data = JSON.parse('{
     {
       "to": [
         {
-          "email": vid.items[0]["video_id"].to_json
+          "email": "alejandr0quinter0@yahoo.com"
         }
       ],
       "subject": "vidconcurso"
@@ -106,7 +106,7 @@ data = JSON.parse('{
   ]
 }')
 
-
+puts data["personalizations"]["to"]["email"]
 sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
 response = sg.client.mail._("send").post(request_body: data)
 puts response.status_code
