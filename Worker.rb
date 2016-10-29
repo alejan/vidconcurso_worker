@@ -86,8 +86,8 @@ s3.put_object({
          bucket: "vidconbanner",
          key: "vidclip/converted/"+msg.split('/')[2]+"/"+File.basename(msg)+".flv"
                         })
-jmail=vid.items[0]["video_id"].to_json.first
-data = JSON.parse('{
+jmail=vid.items[0]['video_id']
+hash = eval('{
   "personalizations": [
     {
       "to": [
@@ -108,7 +108,7 @@ data = JSON.parse('{
     }
   ]
 }')
-puts data.inspect
+data = JSON.parse(hash)
 #to = Email.new(email: vid.items[0]['video_id'].to_s)
 #mail = Mail.new(from, subject,to, content)
 
