@@ -86,13 +86,13 @@ s3.put_object({
          bucket: "vidconbanner",
          key: "vidclip/converted/"+msg.split('/')[2]+"/"+File.basename(msg)+".flv"
                         })
-jmail=JSON.parse(vid.items[0]['video_id'])
+jmail=JSON.parse('{"email":vid.items[0][\"video_id\"]}')
 data = JSON.parse('{
   "personalizations": [
     {
       "to": [
         {
-          "email": jmail
+          "email": jmail[\"email\"]
         }
       ],
       "subject": "vidconcurso"
@@ -108,7 +108,7 @@ data = JSON.parse('{
     }
   ]
 }')
-
+puts data.inspect
 #to = Email.new(email: vid.items[0]['video_id'].to_s)
 #mail = Mail.new(from, subject,to, content)
 
