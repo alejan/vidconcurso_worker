@@ -108,7 +108,7 @@ hash = eval('{
     }
   ]
 }')
-data = JSON.parse(hash)
+data = JSON.parse(hash.to_s)
 #to = Email.new(email: vid.items[0]['video_id'].to_s)
 #mail = Mail.new(from, subject,to, content)
 
