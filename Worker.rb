@@ -83,13 +83,13 @@ s3.put_object({
          key: "vidclip/converted/"+msg.split('/')[2]+"/"+File.basename(msg)+".flv"
                         })
 
-
+puts vid.items[0]['video_id']
 data = JSON.parse('{
   "personalizations": [
     {
       "to": [
         {
-          "email": "#{vid.items[0]['video_id'].to_s}"
+          "email": vid.items[0]['video_id']
         }
       ],
       "subject": "vidconcurso"
