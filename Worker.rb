@@ -83,7 +83,6 @@ s3.put_object({
          key: "vidclip/converted/"+msg.split('/')[2]+"/"+File.basename(msg)+".flv"
                         })
 
-puts vid.items[0]['video_id']
 data = JSON.parse('{
   "personalizations": [
     {
@@ -106,7 +105,7 @@ data = JSON.parse('{
   ]
 }')
 
-puts data["personalizations"]["to"]["email"]
+puts data["personalizations"]["to"]["email"].to_s
 sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
 response = sg.client.mail._("send").post(request_body: data)
 puts response.status_code
