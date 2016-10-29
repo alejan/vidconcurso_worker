@@ -89,7 +89,7 @@ data = JSON.parse('{
     {
       "to": [
         {
-          "email": vid.items[0]['video_id']
+          "email": "alejandr0quinter0@yahoo.com"
         }
       ],
       "subject": "vidconcurso"
