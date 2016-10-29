@@ -96,7 +96,7 @@ data = JSON.parse('{
     }
   ],
   "from": {
-    "email": "vidconcurso@gmail.com"
+    "email": "a.quintero10@uniandes.edu.co"
   },
   "content": [
     {
