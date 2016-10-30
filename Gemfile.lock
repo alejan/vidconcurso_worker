@@ -83,7 +83,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk
   aws-sdk-rails
-  heroku-api (~> 0.4.2)
+  heroku-api
   mail
   sendgrid-ruby
   spring
