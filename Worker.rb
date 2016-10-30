@@ -6,7 +6,7 @@ require 'streamio-ffmpeg'
 require 'mail'
 require 'aws-sdk'
 require 'sendgrid-ruby'
-require 'heroku-api'
+require 'platform-api'
 include SendGrid
 
 heroku = Heroku::API.new(ENV['HEROKU_API_KEY'])
