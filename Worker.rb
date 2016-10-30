@@ -10,10 +10,10 @@ require 'heroku-api'
 include SendGrid
 
 heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
-#heroku = Heroku::API.new(:username => 'a.quintero10@uniandes.edu.co', :password => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
-#heroku = Heroku::API.new(:headers => {'User-Agent' => 'custom'}) 
+heroku = Heroku::API.new(:username => 'a.quintero10@uniandes.edu.co', :password => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
+heroku = Heroku::API.new(:headers => {'User-Agent' => 'custom'}) 
 
-#puts heroku.get_apps 
+puts heroku.get_apps 
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
 dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
