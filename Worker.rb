@@ -31,10 +31,10 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 #end
 
 
-poller.poll do |message|
+poller.poll do |message,stats|
 msg=message.message_attributes['uploaded'].string_value
 
-logger.info  msg
+logger.info  "messages: #{stats.receive_message_count}"
 
 
 FileUtils.mkdir_p Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/')
