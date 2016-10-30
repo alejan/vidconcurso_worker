@@ -37,6 +37,10 @@ GEM
       multi_json (~> 1.8)
     i18n (0.7.0)
     jmespath (1.3.1)
+    little-plugger (1.1.4)
+    logging (2.1.0)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.10)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.4)
@@ -84,6 +88,7 @@ DEPENDENCIES
   aws-sdk
   aws-sdk-rails
   heroku-api
+  logging
   mail
   sendgrid-ruby
   spring
