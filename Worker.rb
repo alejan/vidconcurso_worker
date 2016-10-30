@@ -10,8 +10,8 @@ require 'heroku-api'
 require 'logging'
 include SendGrid
 
-logger = Logging.logger(STDOUT)
-logger.level = :info
+#logger = Logging.logger(STDOUT)
+#logger.level = :info
 heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
@@ -33,6 +33,7 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
 poller.poll do |message,stats|
 msg=message.message_attributes['uploaded'].string_value
+logger = Logging.logger(STDOUT)
 
 logger.info  stats.received_message_count
 
