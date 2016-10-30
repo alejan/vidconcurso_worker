@@ -7,6 +7,7 @@ require 'mail'
 require 'aws-sdk'
 require 'sendgrid-ruby'
 require 'heroku-api'
+require 'logger' 
 include SendGrid
 
 heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
