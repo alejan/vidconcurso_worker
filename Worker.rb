@@ -9,8 +9,8 @@ require 'sendgrid-ruby'
 require 'heroku-api'
 include SendGrid
 
-#heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
-heroku = Heroku::API.new(:password => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
+heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
+#heroku = Heroku::API.new(:password => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
 heroku = Heroku::API.new(:headers => {'User-Agent' => 'custom'}) 
 
 puts heroku.get_apps 
