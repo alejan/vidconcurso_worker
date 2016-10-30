@@ -6,10 +6,10 @@ require 'streamio-ffmpeg'
 require 'mail'
 require 'aws-sdk'
 require 'sendgrid-ruby'
-#require 'heroku-api'
+require 'heroku-api'
 include SendGrid
 
-#heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
+heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
 dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
