@@ -24,17 +24,17 @@ qurl=sqs.get_queue_url({
         })
 poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
-poller.before_request do |stats|
-  logger.info "requests: #{stats.request_count}" 
-  logger.info "messages: #{stats.received_message_count}" 
-  logger.info "last-timestamp: #{stats.last_message_received_at}" 
-end
+#poller.before_request do |stats|
+#  logger.info "requests: #{stats.request_count}" 
+#  logger.info "messages: #{stats.received_message_count}" 
+#  logger.info "last-timestamp: #{stats.last_message_received_at}" 
+#end
 
 
 poller.poll do |message|
 msg=message.message_attributes['uploaded'].string_value
 
-puts msg
+logger.info  msg
 
 
 FileUtils.mkdir_p Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/')
