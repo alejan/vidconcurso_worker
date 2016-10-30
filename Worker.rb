@@ -10,11 +10,6 @@ require 'heroku-api'
 include SendGrid
 
 heroku = Heroku::API.new(:api_key => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
-#heroku = Heroku::API.new(:password => '1c0f985e-4bf2-48cc-935d-cc8714c5a17b')
-#heroku = Heroku::API.new(:headers => {'User-Agent' => 'custom'}) 
-heroku.delete_addon('vidconworker', 'papertrail')
-puts  heroku.get_apps
-puts heroku.get_user 
 
 s3 = Aws::S3::Client.new(region:"us-west-2")
 dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
@@ -25,6 +20,13 @@ qurl=sqs.get_queue_url({
         queue_name: "vidcon_queue"
         })
 poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
+
+poller.before_request do |stats|
+  logger.info("requests: #{stats.request_count}")
+  logger.info("messages: #{stats.received_message_count}")
+  logger.info("last-timestamp: #{stats.last_message_received_at}")
+end
+
 
 poller.poll do |message|
 msg=message.message_attributes['uploaded'].string_value
