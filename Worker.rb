@@ -8,12 +8,6 @@ require 'aws-sdk'
 require 'sendgrid-ruby'
 include SendGrid
 
-
-#from = Email.new(email: 'a.quintero10@uniandes.edu.co')
-#subject = 'vidconcurso'
-#content = Content.new(type: 'text/plain', value: 'su video se ha convertido')
-
-
 s3 = Aws::S3::Client.new(region:"us-west-2")
 dynamoDB = Aws::DynamoDB::Resource.new(region: "us-west-2")
 sqs = Aws::SQS::Client.new(region: "us-west-2")
@@ -26,6 +20,7 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
 poller.poll do |message|
 msg=message.message_attributes['uploaded'].string_value
+
 puts msg
 
 
@@ -109,26 +104,12 @@ hash = eval('{
   ]
 }')
 data = JSON.parse(hash.to_json)
-#to = Email.new(email: vid.items[0]['video_id'].to_s)
-#mail = Mail.new(from, subject,to, content)
 
 sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
 response = sg.client.mail._("send").post(request_body: data)
 puts response.status_code
 puts response.body
 puts response.headers
-
-#Mail.defaults do
-#delivery_method :smtp, options
-#end
-
-#Mail.deliver do
-#to vid.items[0]['video_id']
-#from 'vidconcurso@gmail.com'
-#subject 'Video concurso'
-#body 'su video se genero '
-#end
-
 
 FileUtils.rm_rf(Dir.pwd+"/uploads/"+msg.split('/')[0..2].join('/'))
 FileUtils.rm_rf(Dir.pwd+"/"+msg.split('/')[0..2].join('/'))
