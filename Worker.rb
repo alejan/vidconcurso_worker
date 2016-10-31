@@ -19,13 +19,14 @@ resp = sqs.get_queue_attributes({
   queue_url: qurl['queue_url']
 })
 
-#heroku.post_ps_scale('vidconworker', 'worker', 2) 
 loop do
 
     
-logger.info resp.attributes['ApproximateNumberOfMessages'].to_i
-logger.info heroku.get_app('vidconworker').body['dynos']
+ wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/3).round
+logger.info wrk
 logger.info heroku.get_app('vidconworker').body['workers']
+#heroku.post_ps_scale('vidconworker', 'worker', wrk) 
+
 
 sleep 5
 end
