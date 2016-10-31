@@ -31,7 +31,7 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 #end
 
 
-poller.poll do |message,stats|
+poller.poll( max_number_of_messages:3) do |message,stats|
 msg=message.message_attributes['uploaded'].string_value
 logger = Logging.logger(STDOUT)
 logger.level = :info
