@@ -19,6 +19,7 @@ resp = sqs.get_queue_attributes({
   queue_url: qurl['queue_url']
 })
 
+heroku.post_ps_scale('vidconworker', 'worker', 2) 
 loop do
 
 logger.info resp.attributes['ApproximateNumberOfMessages']
