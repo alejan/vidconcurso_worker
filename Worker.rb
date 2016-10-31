@@ -24,8 +24,6 @@ qurl=sqs.get_queue_url({
         })
 poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
-
-
 #resp = sqs.get_queue_attributes({
 #  attribute_names: ["All"],
 #  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue"
@@ -33,13 +31,6 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
 #logger.info resp.attributes['ApproximateNumberOfMessages']
 poller.poll do |message|
-
-resp = sqs.get_queue_attributes({
-  attribute_names: ["All"],
-  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue"
-
-})
-logger.info resp.attributes['ApproximateNumberOfMessages']
 
 msg=message.message_attributes['uploaded'].string_value
 
