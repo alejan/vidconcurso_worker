@@ -32,7 +32,7 @@ resp = sqs.get_queue_attributes({
  
 })
 
-logger.info resp.inspect
+logger.info resp.attributes['ApproximateNumberOfMessages']
 poller.poll do |message|
 msg=message.message_attributes['uploaded'].string_value
 
