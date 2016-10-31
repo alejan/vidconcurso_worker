@@ -27,10 +27,8 @@ poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 sqs.get_queue_attributes
 
 resp = sqs.get_queue_attributes({
-  attribute_names: [
-    "ALL", 
-  ], 
-  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue", 
+  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue",
+  attribute_names: ["ALL"] 
 })
 
 logger.info resp.inspect
