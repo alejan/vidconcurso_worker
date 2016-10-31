@@ -24,13 +24,16 @@ qurl=sqs.get_queue_url({
         })
 poller = Aws::SQS::QueuePoller.new(qurl['queue_url'], client:  sqs)
 
-poller.before_request do |stats|
-  logger.info "requests: #{stats.request_count}" 
-  logger.info "messages: #{stats.received_message_count}" 
-  logger.info "last-timestamp: #{stats.last_message_received_at}" 
-end
+sqs.get_queue_attributes
 
+resp = sqs.get_queue_attributes({
+  attribute_names: [
+    "ALL" 
+  ], 
+  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue" 
+})
 
+logger.info resp.inspect
 poller.poll do |message|
 msg=message.message_attributes['uploaded'].string_value
 
