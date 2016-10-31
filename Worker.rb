@@ -22,7 +22,8 @@ resp = sqs.get_queue_attributes({
 heroku.post_ps_scale('vidconworker', 'worker', 2) 
 loop do
 
-logger.info resp.attributes['ApproximateNumberOfMessages']
+    
+logger.info resp.attributes['ApproximateNumberOfMessages'].to_i
 logger.info heroku.get_app('vidconworker').body['dynos']
 logger.info heroku.get_app('vidconworker').body['workers']
 
