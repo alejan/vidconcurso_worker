@@ -23,7 +23,7 @@ resp = sqs.get_queue_attributes({
 
 logger.info resp.attributes['ApproximateNumberOfMessages']
 logger.info heroku.get_app('vidconworker').body['dynos']
-logger.info heroku.get_app('vidconworker').body.workers
+logger.info heroku.get_app('vidconworker').body['workers']
 
 sleep 300
 end
