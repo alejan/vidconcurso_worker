@@ -25,12 +25,13 @@ resp = sqs.get_queue_attributes({
  wrk = 0
  msg= resp.attributes['ApproximateNumberOfMessages'].to_i
  case  msg
- when msg == 0
-   wrk = 0
- when msg < 10 and msg > 0
+
+ when msg < 10 , msg > 0
   wrk = 1
  when msg > 10
   wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/10).round
+else
+wrk = 0
  end
   
 logger.info wrk
