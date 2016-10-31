@@ -28,9 +28,9 @@ sqs.get_queue_attributes
 
 resp = sqs.get_queue_attributes({
   attribute_names: [
-    "ALL" 
+    "ALL", 
   ], 
-  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue" 
+  queue_url: "https://sqs.us-west-2.amazonaws.com/344712433810/vidcon_queue", 
 })
 
 logger.info resp.inspect
