@@ -16,7 +16,7 @@ qurl=sqs.get_queue_url({
 
 resp = sqs.get_queue_attributes({
   attribute_names: ["All"],
-  queue_url: qurl
+  queue_url: qurl['queue_url']
 })
 
  loop do
