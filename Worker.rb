@@ -25,7 +25,7 @@ loop do
  wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/3).round
 logger.info wrk
 logger.info heroku.get_app('vidconworker').body['workers']
-#heroku.post_ps_scale('vidconworker', 'worker', wrk) 
+heroku.post_ps_scale('vidconworker', 'worker', wrk) 
 
 
 sleep 5
