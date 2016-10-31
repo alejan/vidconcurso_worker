@@ -21,8 +21,18 @@ loop do
 resp = sqs.get_queue_attributes({
   attribute_names: ["All"],
   queue_url: qurl['queue_url']
-})    
- wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/3).round
+})
+ wrk = 0
+ msg= resp.attributes['ApproximateNumberOfMessages'].to_i
+ case  msg
+ when msg == 0
+   wrk = 0
+ when msg < 10 and msg > 0
+  wrk = 1
+ when msg > 10
+  wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/10).round
+ end
+  
 logger.info wrk
 logger.info heroku.get_app('vidconworker').body['workers']
 heroku.post_ps_scale('vidconworker', 'worker', wrk) 
