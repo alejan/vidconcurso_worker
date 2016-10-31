@@ -22,17 +22,17 @@ resp = sqs.get_queue_attributes({
   attribute_names: ["All"],
   queue_url: qurl['queue_url']
 })
+
  wrk = 0
  msg= resp.attributes['ApproximateNumberOfMessages'].to_i
- case  msg
-
- when msg < 10 , msg > 0
-  wrk = 1
- when msg > 10
-  wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/10).round
-else
-wrk = 0
- end
+ 
+if msg > 0 and msg < 10
+	 wrk = 1
+   elsif msg > 10
+	wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/10).round
+   else
+	wrk = 0
+end
   
 logger.info wrk
 logger.info heroku.get_app('vidconworker').body['workers']
