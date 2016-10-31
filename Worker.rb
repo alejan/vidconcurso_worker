@@ -34,8 +34,8 @@ if msg > 0 and msg < 10
 	wrk = 0
 end
   
-logger.info wrk
-logger.info heroku.get_app('vidconworker').body['workers']
+logger.info "Mensajes  : #{wrk}"
+logger.info "Workers : #{heroku.get_app('vidconworker').body['workers']}"
 heroku.post_ps_scale('vidconworker', 'worker', wrk) 
 
 
