@@ -14,14 +14,14 @@ qurl=sqs.get_queue_url({
         queue_name: "vidcon_queue"
         })
 
-resp = sqs.get_queue_attributes({
-  attribute_names: ["All"],
-  queue_url: qurl['queue_url']
-})
+
 
 loop do
 
-    
+resp = sqs.get_queue_attributes({
+  attribute_names: ["All"],
+  queue_url: qurl['queue_url']
+})    
  wrk=(resp.attributes['ApproximateNumberOfMessages'].to_i/3).round
 logger.info wrk
 logger.info heroku.get_app('vidconworker').body['workers']
