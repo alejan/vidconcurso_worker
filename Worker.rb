@@ -33,11 +33,16 @@ if msg > 0 and msg < 10
    else
 	wrk = 0
 end
+
+com=Time.now if msg == 30
+if msg == 0
+logger.info "Comienzo : #{com}"
+logger.info "Final : #{Time.now}"
+end
   
 logger.info "Mensajes  : #{wrk}"
 logger.info "Workers : #{heroku.get_app('vidconworker').body['workers']}"
 heroku.post_ps_scale('vidconworker', 'worker', wrk) 
-
 
 sleep 5
 end
