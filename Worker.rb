@@ -19,7 +19,7 @@ resp = sqs.get_queue_attributes({
   queue_url: qurl['queue_url']
 })
 
- loop do
+while true
 
 logger.info resp.attributes['ApproximateNumberOfMessages']
 logger.info heroku.get_app('vidconworker').body['dynos']
