@@ -1,6 +1,5 @@
 #!/home/ec2-user/.rvm/rubies/ruby-2.3.0/bin/ruby
 require 'rubygems'
-require 'streamio-ffmpeg'
 require 'aws-sdk'
 require 'heroku-api'
 require 'logging'
